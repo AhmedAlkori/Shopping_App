@@ -22,7 +22,10 @@ class ShopLayout extends StatelessWidget {
           return  Scaffold(
             appBar: AppBar(
               title: Text(
-                'Salla',
+                'Salla Shop',
+                style: TextStyle(
+                  fontFamily: 'Janna'
+                ),
               ),
               actions:
               [
