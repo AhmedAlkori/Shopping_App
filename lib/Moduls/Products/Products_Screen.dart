@@ -3,11 +3,13 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 import '../../Layout/layout_cubit/Layout_State.dart';
 import '../../Layout/layout_cubit/Layout_cubit.dart';
 import '../../Models/Categories/Categories_Model.dart';
 import '../../Models/Home_Model/HomeModel.dart';
+import '../../Shared/Components/component.dart';
 
 
 class ProductScreen extends StatelessWidget {
@@ -25,7 +27,7 @@ class ProductScreen extends StatelessWidget {
         return ConditionalBuilder(
             condition: cubit.homeModel != null && cubit.categoriesModel !=null,
             builder: (context)=> ProductBuilder(cubit.homeModel,cubit.categoriesModel,context),
-            fallback:(context)=> Center(child: CircularProgressIndicator()),
+            fallback:(context)=> getShimmerLoading(context),
         );
       },
 
@@ -75,7 +77,7 @@ class ProductScreen extends StatelessWidget {
                   'Categories',
                   style: TextStyle(
                     fontWeight: FontWeight.w800,
-                    fontSize: 24.0,
+                    fontSize: 22.0,
 
                   ),
                 ),
@@ -98,7 +100,8 @@ class ProductScreen extends StatelessWidget {
                  'New Products',
                  style: TextStyle(
                    fontWeight: FontWeight.w800,
-                   fontSize: 24.0,
+                   fontSize: 22.0,
+
 
                  ),
                ),
@@ -111,9 +114,9 @@ class ProductScreen extends StatelessWidget {
                 crossAxisCount: 2,
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              mainAxisSpacing: 1.0,
-              crossAxisSpacing: 1.0,
-              childAspectRatio: 1/ 1.70,
+              mainAxisSpacing: 1.7,
+              crossAxisSpacing: 1.7,
+              childAspectRatio: 1/ 1.50,
               children:List.generate(
                    model!.data!.products.length,
                          (index) => GridItem(model.data!.products[index],context)
@@ -125,115 +128,118 @@ class ProductScreen extends StatelessWidget {
     ),
   );
 
-  Widget GridItem(ProductModel? model,context)=>Container(
-    color: Colors.white,
-    child: Column(
+  Widget GridItem(ProductModel? model,context)=>Padding(
+    padding: const EdgeInsets.all(4.0),
+    child: Container(
+      color: Colors.white,
+      child: Column(
 
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children:
-      [
-        Stack(
-          alignment: AlignmentDirectional.bottomStart,
-          children:
-          [
-            Image(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children:
+        [
+          Stack(
+            alignment: AlignmentDirectional.bottomStart,
+            children:
+            [
+              Image(
 
-                image: NetworkImage(model!.image.toString()),
-                width: double.infinity,
-                height: 200.0,
+                  image: NetworkImage(model!.image.toString()),
+                  width: double.infinity,
+                  height: 200.0,
 
-              ),
-
-            if(model.discount >0)
-              Container(
-                  color: Colors.red,
-                  padding: EdgeInsets.symmetric(horizontal: 5),
-                  child: Text(
-                    'DISCOUNT',
-                    style: TextStyle(
-                      fontSize: 10.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
                 ),
 
-
-          ],
-        ),
-
-        Padding(
-            padding:EdgeInsets.symmetric(
-              horizontal: 10.0,
-
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children:
-              [
-                 Text(
-                    '${model.name}',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      height: 1.3,
-                      fontSize: 14.0,
-                    ),
-
-                  ),
-
-                Row(
-                  children:
-                  [
-                    Text(
-                      '${model.price}',
+              if(model.discount >0)
+                Container(
+                    color: Colors.red,
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    child: Text(
+                      'DISCOUNT',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12.0,
-                        color: Colors.deepOrange,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10.0,
-                    ),
-                    if(model.discount>0)
-                    Text(
-                      '${model.old_price}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
                         fontSize: 10.0,
-                        decoration: TextDecoration.lineThrough,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Spacer(),
-                    IconButton(
-                      onPressed: ()
-                      {
-                        LayoutCubit.get(context).changeFavorites(FavId: model.id);
-                      },
-                      icon: CircleAvatar(
-                        radius: 100.0,
-                        backgroundColor: LayoutCubit.get(context).favoritesMap[model.id]==true
-                            ? Colors.deepOrange
-                            : Colors.grey ,
-                        child: Icon(
-                          Icons.favorite_border,
-                           color: Colors.white,
-                           size: 15,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ],
-            ),
+                  ),
+
+
+            ],
           ),
 
+          Padding(
+              padding:EdgeInsets.symmetric(
+                horizontal: 10.0,
+
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children:
+                [
+                   Text(
+                      '${model.name}',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        height: 1.3,
+                        fontSize: 14.0,
+                      ),
+
+                    ),
+
+                  Row(
+                    children:
+                    [
+                      Text(
+                        '${model.price}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12.0,
+                          color: Colors.deepOrange,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      if(model.discount>0)
+                      Text(
+                        '${model.old_price}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                          fontSize: 10.0,
+                          decoration: TextDecoration.lineThrough,
+                        ),
+                      ),
+                      Spacer(),
+                      IconButton(
+                        onPressed: ()
+                        {
+                          LayoutCubit.get(context).changeFavorites(FavId: model.id);
+                        },
+                        icon: CircleAvatar(
+                          radius: 100.0,
+                          backgroundColor: LayoutCubit.get(context).favoritesMap[model.id]==true
+                              ? Colors.deepOrange
+                              : Colors.grey ,
+                          child: Icon(
+                            Icons.favorite_border,
+                             color: Colors.white,
+                             size: 15,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
 
 
-      ],
+
+        ],
+      ),
     ),
   );
 
