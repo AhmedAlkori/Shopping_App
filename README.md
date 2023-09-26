@@ -1,6 +1,6 @@
 # shopping_app
 
-A new Flutter project developed by <a href="t.me/dev_Ahmed_Foud">Eng/Ahmed Alkori</a>.
+A new Flutter project developed by <a href="https://t.me/dev_Ahmed_Foud">Eng/Ahmed Alkori</a>.
 
 ## Getting Started
 
@@ -15,5 +15,5 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
-@All right reserved to <a href="t.me/dev_Ahmed_Foud">Dev/Ahmed Alkori</a>
+@All right reserved to <a href="http://t.me/dev_Ahmed_Foud">Dev/Ahmed Alkori</a>
 
